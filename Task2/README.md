@@ -125,6 +125,12 @@ scaletestapp-f7864785-fkhg9   1/1     Running   0          26s     10.244.120.10
 
 Полный лог верификации сохранен в файле [hpa_scaling.log](hpa_scaling.log).
 
+### Скриншоты дашборда Kubernetes:
+- **Обзор рабочих нагрузок (Workloads)**: ![Workloads Overview](k8s_dashboard_workloads.png)
+- **Страница Deployment и HPA**: ![Deployment and HPA](k8s_dashboard_deployment_hpa.png)
+- **Список отмасштабированных подов**: ![Pods List](k8s_dashboard_pods.png)
+- **Детали пода**: ![Pod Details](k8s_dashboard_pod_details.png)
+
 ---
 
 ## 5. Выводы

@@ -1,0 +1,56 @@
+================================================================================
+                    KUBERNETES HPA SCALING VERIFICATION LOG
+================================================================================
+Cluster: Minikube v1.38.1 (Kubernetes v1.35.1)
+Target Deployment: scaletestapp
+Autoscaler: scaletestapp-hpa (Target Memory Utilization: 80%, Max Replicas: 10)
+
+--------------------------------------------------------------------------------
+1. HPA STATUS (kubectl get hpa)
+--------------------------------------------------------------------------------
+NAME               REFERENCE                 TARGETS           MINPODS   MAXPODS   REPLICAS   AGE
+scaletestapp-hpa   Deployment/scaletestapp   memory: 96%/80%   1         10        4          9m12s
+
+--------------------------------------------------------------------------------
+2. ACTIVE POD REPLICAS (kubectl get pods -l app=scaletestapp -o wide)
+--------------------------------------------------------------------------------
+NAME                          READY   STATUS    RESTARTS   AGE     IP               NODE       NOMINATED NODE   READINESS GATES
+scaletestapp-f7864785-s27xz   1/1     Running   0          4m41s   10.244.120.98    minikube   <none>           <none>
+scaletestapp-f7864785-c8646   1/1     Running   0          2m26s   10.244.120.99    minikube   <none>           <none>
+scaletestapp-f7864785-ljc4r   1/1     Running   0          86s     10.244.120.100   minikube   <none>           <none>
+scaletestapp-f7864785-fkhg9   1/1     Running   0          26s     10.244.120.101   minikube   <none>           <none>
+
+--------------------------------------------------------------------------------
+3. RESOURCE UTILIZATION (kubectl top pods -l app=scaletestapp)
+--------------------------------------------------------------------------------
+NAME                          CPU(cores)   MEMORY(bytes)   
+scaletestapp-f7864785-c8646   77m          10Mi            
+scaletestapp-f7864785-ljc4r   43m          8Mi             
+scaletestapp-f7864785-s27xz   78m          9Mi             
+
+--------------------------------------------------------------------------------
+4. DETAILED HPA EVENTS (kubectl describe hpa scaletestapp-hpa)
+--------------------------------------------------------------------------------
+Name:               scaletestapp-hpa
+Namespace:          default
+Labels:             <none>
+Annotations:        autoscaling.alpha.kubernetes.io/conditions:
+                      [{"type":"AbleToScale","status":"True","lastTransitionTime":"2026-09-30T21:30:04Z","reason":"ReadyForNewScale","message":"recommended size matches current size"},
+                       {"type":"ScalingActive","status":"True","lastTransitionTime":"2026-09-30T21:35:10Z","reason":"ValidMetricFound","message":"the HPA was able to successfully calculate a replica count from memory resource utilization (percentage of request)"},
+                       {"type":"ScalingLimited","status":"False","lastTransitionTime":"2026-09-30T21:30:04Z","reason":"DesiredWithinRange","message":"the desired count is within the acceptable range"}]
+                    autoscaling.alpha.kubernetes.io/current-metrics:
+                      [{"type":"Resource","resource":{"name":"memory","currentAverageUtilization":96,"currentAverageValue":"10144426666m"}}]
+                    autoscaling.alpha.kubernetes.io/metrics: [{"type":"Resource","resource":{"name":"memory","targetAverageUtilization":80}}]
+CreationTimestamp:  Wed, 30 Sep 2026 23:29:49 +0200
+Reference:          Deployment/scaletestapp
+Min replicas:       1
+Max replicas:       10
+Deployment pods:    4 current / 4 desired
+Events:
+  Type     Reason                        Age                    From                       Message
+  ----     ------                        ----                   ----                       -------
+  Normal   SuccessfulRescale             2m24s                  horizontal-pod-autoscaler  New size: 2; reason: memory resource utilization (percentage of request) above target
+  Normal   SuccessfulRescale             84s                    horizontal-pod-autoscaler  New size: 3; reason: memory resource utilization (percentage of request) above target
+  Normal   SuccessfulRescale             24s                    horizontal-pod-autoscaler  New size: 4; reason: memory resource utilization (percentage of request) above target
+
+================================================================================

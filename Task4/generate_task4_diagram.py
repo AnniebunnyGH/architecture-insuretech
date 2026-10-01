@@ -222,7 +222,8 @@ old_ids = [
     "rel_kafka_to_osago_agg", "rel_osago_agg_to_kafka", "rel_kafka_to_core_proposals",
     "rel_osago_agg_to_sk", "pat_rate_limit_web_ico", "pat_rate_limit_web_txt",
     "pat_timeout_sk_ico", "pat_timeout_sk_txt", "pat_retry_sk_ico", "pat_retry_sk_txt",
-    "pat_cb_sk_ico", "pat_cb_sk_txt", "pat_rate_limit_sk_ico", "pat_rate_limit_sk_txt"
+    "pat_cb_sk_ico", "pat_cb_sk_txt", "pat_rate_limit_sk_ico", "pat_rate_limit_sk_txt",
+    "opt_note_callout", "opt_note_edge"
 ]
 for oid in old_ids:
     remove_element(oid)
@@ -502,6 +503,37 @@ add_resilience_badge("pat_retry_sk", "deploy", "Retry\n(Backoff)", 1750, 390)
 add_resilience_badge("pat_cb_sk", "c_role", "Circuit\nBreaker", 1830, 390)
 add_resilience_badge("pat_rate_limit_sk", "job", "Rate Limiter\n(per СК)", 1750, 560)
 
+# --- ARCHITECTURAL OPTIMIZATION NOTE (PUSH GATEWAY / SSE PROXY) ---
+note_cell = ET.Element("mxCell", {
+    "id": "opt_note_callout",
+    "value": "<b>💡 Архитектурная оптимизация (TO-BE Evolution):</b><br>Для разгрузки <i>core-app</i> от удержания 2 500+ долгоживущих SSE-соединений целесообразно вынести прослойку <b>Push Gateway / API Gateway</b>.<br>Веб-клиент держит SSE со шлюзом, а шлюз вычитывает топик <i>osago.proposals</i> напрямую из Kafka и пушит в браузер.",
+    "style": "shape=note;whiteSpace=wrap;html=1;size=14;verticalAlign=top;align=left;spacing=8;fillColor=#FFF9C4;strokeColor=#FBC02D;fontColor=#333333;fontSize=10;dashed=1;",
+    "vertex": "1",
+    "parent": "1"
+})
+ET.SubElement(note_cell, "mxGeometry", {
+    "x": "40", "y": "140", "width": "340", "height": "115", "as": "geometry"
+})
+model_root.append(note_cell)
+
+# Dashed pointer from note to the SSE arrow area
+note_edge = ET.Element("mxCell", {
+    "id": "opt_note_edge",
+    "style": "endArrow=open;dashed=1;html=1;strokeColor=#FBC02D;strokeWidth=1.5;elbow=vertical;rounded=0;edgeStyle=orthogonalEdgeStyle;",
+    "edge": "1",
+    "parent": "1",
+    "source": "opt_note_callout"
+})
+note_geo = ET.SubElement(note_edge, "mxGeometry", {
+    "relative": "1", "as": "geometry"
+})
+note_arr = ET.SubElement(note_geo, "Array", {"as": "points"})
+ET.SubElement(note_arr, "mxPoint", {"x": "380", "y": "200"})
+ET.SubElement(note_arr, "mxPoint", {"x": "670", "y": "200"})
+ET.SubElement(note_arr, "mxPoint", {"x": "670", "y": "360"})
+model_root.append(note_edge)
+
 os.makedirs('Task4', exist_ok=True)
 tree.write(dest_path, encoding='utf-8', xml_declaration=True)
 print(f"Successfully generated cleaned and spaced {dest_path}")
+

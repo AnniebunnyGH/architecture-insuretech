@@ -70,82 +70,25 @@ CREATE TABLE outbox_events (
 
 ## 4. Диаграмма контейнеров (C4 Container Diagram)
 
-Файл схемы draw.io: [Task3/InsureTech_C4_container-diagram.drawio](InsureTech_C4_container-diagram.drawio)
+Файл схемы для draw.io: [InsureTech_C4_container-diagram.drawio](InsureTech_C4_container-diagram.drawio)
 
-### Ключевые изменения схемы:
-* Введен центральный контейнер **Apache Kafka** (буферизация событий полисов и тарифов).
-* Устранены 3 синхронных REST-зависимости (периодический поллинг и ночной экспорт).
-* Партнерский пул расширен до **10 страховых компаний**.
-* В `core-db` зафиксирована таблица `outbox_events`.
-
-```mermaid
-flowchart TD
-    subgraph EXT["Внешние акторы и партнерские системы"]
-        client(["👤 Клиент\n[Person]"])
-        partner["🏢 B2B Партнёры\n[External System]"]
-        payment["💳 Платежный сервис\n[External System]"]
-        ins_companies["🏛️ 10 Страховых Компаний\n[External Systems]"]
-    end
-
-    subgraph PLATFORM["Контур InsureTech Platform"]
-        subgraph FRONTEND["Веб-интерфейс"]
-            web["💻 InsureTech Web\n[React SPA]"]
-        end
-
-        subgraph SERVICES["Микросервисы"]
-            core_app["⚙️ core-app\n[Kotlin / Spring Boot]\n• Каталог и полисы\n• Transactional Outbox\n• Локальная реплика тарифов"]
-            client_info["👤 client-info\n[Kotlin / Spring Boot]\n• Профили клиентов"]
-            aggregator["🔄 ins-product-aggregator\n[Kotlin / Spring Boot]\n• Интеграция с 10 СК"]
-            settlement["📊 ins-comp-settlement\n[Kotlin / Spring Boot]\n• Взаиморасчеты с СК\n• Idempotent Consumer"]
-        end
-
-        subgraph BROKER["Шина событий (Event Streaming)"]
-            kafka{{"📨 Apache Kafka\n• Топик: insurance.products-tariffs\n• Топик: insurance.policies"}}
-        end
-
-        subgraph STORAGE["Хранилища данных (PostgreSQL)"]
-            core_db[("🗄️ core-db\n(полисы, заявки,\noutbox_events)")]
-            client_db[("🗄️ client-info-db\n(персональные данные)")]
-            settlement_db[("🗄️ settlement-db\n(реестры взаиморасчетов)")]
-        end
-    end
-
-    %% Пользовательские и B2B связи
-    client -->|HTTPS| web
-    partner -->|REST API| core_app
-    web -->|REST| core_app
-    web -->|REST| client_info
-    web -->|Redirect| payment
-
-    %% Межсервисные синхронные связи и БД
-    core_app -->|REST| client_info
-    core_app -->|JDBC| core_db
-    client_info -->|JDBC| client_db
-    settlement -->|JDBC| settlement_db
-
-    %% Асинхронные потоки событий (Kafka)
-    core_app ==>|Transactional Outbox / CDC| kafka
-    aggregator ==>|Публикация тарифов| kafka
-    kafka ==>|Стриминг тарифов| core_app
-    kafka ==>|Стриминг полисов и тарифов| settlement
-
-    %% Интеграции со страховыми компаниями
-    ins_companies -->|REST / SOAP / Тарифы| aggregator
-    settlement -->|Реестр раз в месяц| ins_companies
-
-    %% Стилизация в концепции C4
-    classDef person fill:#08427B,stroke:#052E56,color:#ffffff,stroke-width:2px;
-    classDef ext fill:#778899,stroke:#556677,color:#ffffff,stroke-width:1px;
-    classDef app fill:#1168BD,stroke:#0B4884,color:#ffffff,stroke-width:1px;
-    classDef db fill:#24548A,stroke:#17375B,color:#ffffff,stroke-width:1px;
-    classDef queue fill:#2E7D32,stroke:#1B5E20,color:#ffffff,stroke-width:2px;
-
-    class client person;
-    class partner,payment,ins_companies ext;
-    class web,core_app,client_info,aggregator,settlement app;
-    class core_db,client_db,settlement_db db;
-    class kafka queue;
-```
+### Ключевые изменения схемы (TO-BE):
+1. **Добавлен кластер Apache Kafka**:
+   - Центральная шина событий платформы.
+   - Буферизирует топики `insurance.products-tariffs` и `insurance.policies`.
+2. **Ликвидирован синхронный поллинг**:
+   - Удалена связь `core-app -> ins-product-aggregator` (опрос тарифов раз в 15 мин).
+   - Удалена связь `ins-comp-settlement -> ins-product-aggregator` (суточный опрос тарифов).
+   - Удален ночной «тяжелый» REST-запрос `ins-comp-settlement -> core-app` за полисами суток.
+3. **Внедрен асинхронный стриминг**:
+   - `ins-product-aggregator ➔ Kafka`: публикация обновлений тарифов (`Kafka Producer`).
+   - `Kafka ➔ core-app`: подписка на обновления тарифов (`Kafka Consumer`) с репликацией в `core-db`.
+   - `core-app / core-db ➔ Kafka`: гарантированная отправка полисов через **Transactional Outbox / CDC**.
+   - `Kafka ➔ ins-comp-settlement`: непрерывный учет полисов (`Kafka Consumer`) для расчетов с СК.
+4. **Партнерская сеть**:
+   - Число внешних страховых компаний расширено с 5 до **10 СК**.
+5. **Хранилище данных (`core-db`)**:
+   - Добавлена таблица `outbox_events` для атомарной фиксации событий полисов в рамках транзакции.
 
 ---
 

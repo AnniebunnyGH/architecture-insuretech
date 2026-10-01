@@ -494,7 +494,7 @@ def add_resilience_badge(icon_id, pr_icon, title, x, y, width=36, height=34):
     model_root.append(text_cell)
 
 # Badge 1: Rate Limiter on Web -> core-app entrance (x=440, y=340, left of arrows)
-add_resilience_badge("pat_rate_limit_web", "job", "Rate Limiter\n(2500 RPS)", 440, 335)
+add_resilience_badge("pat_rate_limit_web", "job", "Rate Limiter\n(per User / IP)", 440, 335)
 
 # Badges 2-5: In the spacious corridor between osago-aggregator (x=1620) and 10 СК (x=1920)
 # Column at x=1710, y=340..580

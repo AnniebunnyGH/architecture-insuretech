@@ -79,47 +79,72 @@ CREATE TABLE outbox_events (
 * В `core-db` зафиксирована таблица `outbox_events`.
 
 ```mermaid
-C4Container
-    title Диаграмма контейнеров InsureTech (TO-BE Event-Driven)
+flowchart TD
+    subgraph EXT["Внешние акторы и партнерские системы"]
+        client(["👤 Клиент\n[Person]"])
+        partner["🏢 B2B Партнёры\n[External System]"]
+        payment["💳 Платежный сервис\n[External System]"]
+        ins_companies["🏛️ 10 Страховых Компаний\n[External Systems]"]
+    end
 
-    Person(client, "Клиент", "Частный пользователь сервиса")
-    System_Ext(partner, "Системы партнеров", "Интеграция через B2B API")
-    System_Ext(payment, "Платежный сервис", "Оплата редиректом")
-    System_Ext(ins_companies, "10 страховых компаний", "Внешние СК (REST / SOAP / GraphQL)")
+    subgraph PLATFORM["Контур InsureTech Platform"]
+        subgraph FRONTEND["Веб-интерфейс"]
+            web["💻 InsureTech Web\n[React SPA]"]
+        end
 
-    System_Boundary(insuretech, "InsureTech Platform") {
-        Container(web, "InsureTech Web", "React", "Клиентский веб-интерфейс")
-        Container(core_app, "core-app", "Kotlin, Spring Boot", "Каталог, оформление страховок (Outbox), подписка на тарифы")
-        Container(client_info, "client-info", "Kotlin, Spring Boot", "Профили клиентов")
-        Container(aggregator, "ins-product-aggregator", "Kotlin, Spring Boot", "Сбор тарифов 10 СК и публикация в Kafka")
-        Container(settlement, "ins-comp-settlement", "Kotlin, Spring Boot", "Поточный учет полисов из Kafka, ежемесячные реестры СК")
+        subgraph SERVICES["Микросервисы"]
+            core_app["⚙️ core-app\n[Kotlin / Spring Boot]\n• Каталог и полисы\n• Transactional Outbox\n• Локальная реплика тарифов"]
+            client_info["👤 client-info\n[Kotlin / Spring Boot]\n• Профили клиентов"]
+            aggregator["🔄 ins-product-aggregator\n[Kotlin / Spring Boot]\n• Интеграция с 10 СК"]
+            settlement["📊 ins-comp-settlement\n[Kotlin / Spring Boot]\n• Взаиморасчеты с СК\n• Idempotent Consumer"]
+        end
 
-        ContainerDb(core_db, "core-db", "PostgreSQL", "Полисы, заявки и таблица outbox_events")
-        ContainerDb(client_db, "client-info-db", "PostgreSQL", "Персональные данные")
-        ContainerDb(settlement_db, "ins-comp-settlement-db", "PostgreSQL", "Взаиморасчеты")
+        subgraph BROKER["Шина событий (Event Streaming)"]
+            kafka{{"📨 Apache Kafka\n• Топик: insurance.products-tariffs\n• Топик: insurance.policies"}}
+        end
 
-        ContainerQueue(kafka, "Apache Kafka", "Event-Streaming", "Топики: insurance.products-tariffs, insurance.policies")
-    }
+        subgraph STORAGE["Хранилища данных (PostgreSQL)"]
+            core_db[("🗄️ core-db\n(полисы, заявки,\noutbox_events)")]
+            client_db[("🗄️ client-info-db\n(персональные данные)")]
+            settlement_db[("🗄️ settlement-db\n(реестры взаиморасчетов)")]
+        end
+    end
 
-    Rel(client, web, "Поиск и покупка", "HTTPS")
-    Rel(web, core_app, "Тарифы и создание заявок", "REST")
-    Rel(web, client_info, "Данные профиля", "REST")
-    Rel(web, payment, "Оплата", "HTTP")
-    Rel(partner, core_app, "B2B оформление", "REST")
+    %% Пользовательские и B2B связи
+    client -->|HTTPS| web
+    partner -->|REST API| core_app
+    web -->|REST| core_app
+    web -->|REST| client_info
+    web -->|Redirect| payment
 
-    Rel(core_app, client_info, "Данные клиента", "REST")
-    Rel(core_app, core_db, "Запись полиса и outbox_events", "JDBC")
-    Rel(core_app, payment, "Проведение оплаты", "HTTP")
-    Rel(core_app, kafka, "Публикация проданных полисов", "Outbox / CDC")
-    Rel(kafka, core_app, "Стриминг тарифов в локальную реплику", "Consumer")
+    %% Межсервисные синхронные связи и БД
+    core_app -->|REST| client_info
+    core_app -->|JDBC| core_db
+    client_info -->|JDBC| client_db
+    settlement -->|JDBC| settlement_db
 
-    Rel(client_info, client_db, "Хранение профилей", "JDBC")
-    Rel(aggregator, ins_companies, "Сбор тарифов", "REST/SOAP/GraphQL")
-    Rel(aggregator, kafka, "Публикация обновлений продуктов", "Producer")
+    %% Асинхронные потоки событий (Kafka)
+    core_app ==>|Transactional Outbox / CDC| kafka
+    aggregator ==>|Публикация тарифов| kafka
+    kafka ==>|Стриминг тарифов| core_app
+    kafka ==>|Стриминг полисов и тарифов| settlement
 
-    Rel(kafka, settlement, "Поточный прием полисов и тарифов", "Consumer")
-    Rel(settlement, settlement_db, "Сохранение реестра", "JDBC")
-    Rel(settlement, ins_companies, "Ежемесячный реестр", "REST/SOAP")
+    %% Интеграции со страховыми компаниями
+    ins_companies -->|REST / SOAP / Тарифы| aggregator
+    settlement -->|Реестр раз в месяц| ins_companies
+
+    %% Стилизация в концепции C4
+    classDef person fill:#08427B,stroke:#052E56,color:#ffffff,stroke-width:2px;
+    classDef ext fill:#778899,stroke:#556677,color:#ffffff,stroke-width:1px;
+    classDef app fill:#1168BD,stroke:#0B4884,color:#ffffff,stroke-width:1px;
+    classDef db fill:#24548A,stroke:#17375B,color:#ffffff,stroke-width:1px;
+    classDef queue fill:#2E7D32,stroke:#1B5E20,color:#ffffff,stroke-width:2px;
+
+    class client person;
+    class partner,payment,ins_companies ext;
+    class web,core_app,client_info,aggregator,settlement app;
+    class core_db,client_db,settlement_db db;
+    class kafka queue;
 ```
 
 ---

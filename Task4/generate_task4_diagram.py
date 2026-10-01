@@ -468,11 +468,25 @@ add_rel(
 
 # --- ADD RESILIENCE BADGES IN CLEAN, DEDICATED SPACES ---
 
+import urllib.parse
+
+def make_svg_uri(inner_svg):
+    svg = f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48"><rect width="48" height="48" rx="4" fill="#2875E2" stroke="#ffffff" stroke-width="2"/>{inner_svg}</svg>'
+    return 'data:image/svg+xml,' + urllib.parse.quote(svg)
+
+svg_map = {
+    'quota': make_svg_uri('<circle cx="24" cy="24" r="13" fill="none" stroke="#ffffff" stroke-width="3"/><polyline points="24,16 24,24 29,24" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>'),
+    'deploy': make_svg_uri('<path d="M24,12 A12,12 0 1,0 36,24" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/><polygon points="36,15 43,24 33,24" fill="#ffffff"/>'),
+    'c_role': make_svg_uri('<path d="M24,10 L36,15 C36,26 24,35 24,37 C24,35 12,26 12,15 Z" fill="none" stroke="#ffffff" stroke-width="3" stroke-linejoin="round"/><path d="M19,23 L23,27 L29,19" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>'),
+    'job': make_svg_uri('<path d="M13,31 A13,13 0 1,1 35,31" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/><line x1="24" y1="24" x2="30" y2="17" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/><circle cx="24" cy="24" r="3" fill="#ffffff"/>')
+}
+
 def add_resilience_badge(icon_id, pr_icon, title, x, y, width=36, height=34):
+    img_uri = svg_map.get(pr_icon, '')
     icon_cell = ET.Element("mxCell", {
         "id": f"{icon_id}_ico",
         "value": "",
-        "style": f"aspect=fixed;sketch=0;html=1;dashed=0;whitespace=wrap;verticalLabelPosition=bottom;verticalAlign=top;fillColor=#2875E2;strokeColor=#ffffff;shape=mxgraph.kubernetes.icon2;prIcon={pr_icon}",
+        "style": f"aspect=fixed;sketch=0;html=1;dashed=0;whitespace=wrap;verticalLabelPosition=bottom;verticalAlign=top;shape=image;image={img_uri};fillColor=#2875E2;strokeColor=#ffffff;",
         "vertex": "1",
         "parent": "1"
     })

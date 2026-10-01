@@ -1,0 +1,205 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mxfile host="app.diagrams.net" version="24.7.11">
+  <diagram name="InureTech_технологическая архитектура_to-be" id="inuretech-to-be">
+    <mxGraphModel dx="1422" dy="850" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2400" pageHeight="1600" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="2" value="&lt;div style='font-size:20px; font-weight:bold; color:#FFFFFF;'&gt;InsureTech: Целевая технологическая архитектура (TO-BE)&lt;/div&gt;&lt;div style='font-size:13px; color:#94A3B8; margin-top:3px;'&gt;Multi-AZ (3 зоны) | SLA: 99.9% | RTO &amp;le; 45 мин. (факт &amp;lt; 1 мин.) | RPO &amp;le; 15 мин. (факт 0 мин.) | Yandex Cloud CDN + L7 ALB&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#0F172A;strokeColor=#1E293B;fontColor=#FFFFFF;align=center;verticalAlign=middle;shadow=1;" parent="1" vertex="1">
+          <mxGeometry x="60" y="30" width="2280" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="3" value="&lt;div style='font-size:14px; font-weight:bold; color:#1E40AF;'&gt;👥 Пользователи в регионах РФ&lt;/div&gt;&lt;div style='font-size:12px; color:#475569;'&gt;Клиенты из 11 часовых поясов РФ (Калининград ... Владивосток)&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#FFFFFF;strokeColor=#2563EB;strokeWidth=2;fontColor=#0F172A;align=center;verticalAlign=middle;shadow=1;" parent="1" vertex="1">
+          <mxGeometry x="450" y="110" width="480" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="4" value="&lt;div style='font-size:14px; font-weight:bold; color:#475569;'&gt;🏢 B2B Партнёры и Агенты&lt;/div&gt;&lt;div style='font-size:12px; color:#475569;'&gt;Банки, агрегаторы, ритейл (REST / gRPC API)&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#FFFFFF;strokeColor=#475569;strokeWidth=2;fontColor=#0F172A;align=center;verticalAlign=middle;shadow=1;" parent="1" vertex="1">
+          <mxGeometry x="1470" y="110" width="480" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="5" value="&lt;div style='font-size:13px; font-weight:bold; color:#0369A1;'&gt;🌐 Yandex Cloud CDN (Edge Caching)&lt;/div&gt;&lt;div style='font-size:11px; color:#334155; line-height:140%; margin-top:3px;'&gt;• Точки присутствия (PoPs) по всей РФ (СПб, Урал, Сибирь, ДВ, Юг)&lt;br&gt;• Кэширование статики SPA (JS/CSS, картинки) | &lt;b&gt;TTFB &amp;lt; 50 мс&lt;/b&gt;&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#F0F9FF;strokeColor=#0284C7;strokeWidth=1.5;fontColor=#0F172A;align=left;verticalAlign=top;spacing=10;shadow=1;" parent="1" vertex="1">
+          <mxGeometry x="60" y="190" width="680" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="6" value="&lt;div style='font-size:13px; font-weight:bold; color:#334155;'&gt;🛡️ Cloud DNS &amp;amp; DDoS Protection&lt;/div&gt;&lt;div style='font-size:11px; color:#334155; line-height:140%; margin-top:3px;'&gt;• Anycast GeoDNS маршрутизация&lt;br&gt;• Защита от L3/L4 DDoS-атак на периметре&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#F8FAFC;strokeColor=#475569;strokeWidth=1.5;fontColor=#0F172A;align=left;verticalAlign=top;spacing=10;shadow=1;" parent="1" vertex="1">
+          <mxGeometry x="780" y="190" width="740" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="7" value="&lt;div style='font-size:13px; font-weight:bold; color:#B45309;'&gt;🔒 WAF &amp;amp; Rate Limiting&lt;/div&gt;&lt;div style='font-size:11px; color:#334155; line-height:140%; margin-top:3px;'&gt;• Защита от L7 веб-атак (OWASP Top 10)&lt;br&gt;• Rate Limiting &amp;amp; Quotas (изоляция B2B партнёров)&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#FEFCE8;strokeColor=#CA8A04;strokeWidth=1.5;fontColor=#0F172A;align=left;verticalAlign=top;spacing=10;shadow=1;" parent="1" vertex="1">
+          <mxGeometry x="1560" y="190" width="780" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="8" value="&lt;b&gt;Статика (SPA)&lt;/b&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;fontColor=#0F172A;fontSize=11;labelBackgroundColor=#FFFFFF;strokeWidth=2;strokeColor=#0284C7;dashed=1;exitX=0.2;exitY=1;entryX=0.5;entryY=0;" parent="1" edge="1" source="3" target="5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="9" value="&lt;b&gt;Динамика (API)&lt;/b&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;fontColor=#0F172A;fontSize=11;labelBackgroundColor=#FFFFFF;strokeWidth=2;strokeColor=#2563EB;exitX=0.7;exitY=1;entryX=0.3;entryY=0;" parent="1" edge="1" source="3" target="6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="10" value="&lt;b&gt;B2B API&lt;/b&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;fontColor=#0F172A;fontSize=11;labelBackgroundColor=#FFFFFF;strokeWidth=2;strokeColor=#CA8A04;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" parent="1" edge="1" source="4" target="7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="11" value="&lt;div style='font-size:13px; font-weight:bold; color:#1E40AF;'&gt;⚖️ Yandex Application Load Balancer (ALB) — L7 Multi-AZ&lt;/div&gt;&lt;div style='font-size:11px; color:#334155; margin-top:2px;'&gt;Anycast IP в 3 зонах | SSL Termination | Балансировка на Ingress | &lt;b&gt;Health Check: &lt;code&gt;GET /healthz&lt;/code&gt; (каждые 2с)&lt;/b&gt;&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#EFF6FF;strokeColor=#2563EB;strokeWidth=2;fontColor=#0F172A;align=center;verticalAlign=middle;shadow=1;" parent="1" vertex="1">
+          <mxGeometry x="60" y="295" width="2280" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="12" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;fontColor=#0F172A;fontSize=11;labelBackgroundColor=#FFFFFF;strokeWidth=2;strokeColor=#2563EB;exitX=0.5;exitY=1;entryX=0.45;entryY=0;" parent="1" edge="1" source="6" target="11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="13" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;fontColor=#0F172A;fontSize=11;labelBackgroundColor=#FFFFFF;strokeWidth=2;strokeColor=#CA8A04;exitX=0.5;exitY=1;entryX=0.85;entryY=0;" parent="1" edge="1" source="7" target="11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="14" value="Origin (cache miss)" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;fontColor=#0F172A;fontSize=11;labelBackgroundColor=#FFFFFF;strokeWidth=2;strokeColor=#0284C7;dashed=1;exitX=0.5;exitY=1;entryX=0.15;entryY=0;" parent="1" edge="1" source="5" target="11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="15" value="&lt;div style='font-size:14px; font-weight:bold; color:#334155;'&gt;☁️ Регион Yandex Cloud: ru-central1 (3 зоны доступности: ru-central1-a, ru-central1-b, ru-central1-d)&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#F8FAFC;strokeColor=#94A3B8;strokeWidth=1.5;dashed=1;fontColor=#1E293B;verticalAlign=top;align=left;spacingTop=8;spacingLeft=15;" parent="1" vertex="1">
+          <mxGeometry x="60" y="375" width="2280" height="720" as="geometry" />
+        </mxCell>
+        <mxCell id="16" value="&lt;div style='font-size:12px; font-weight:bold; color:#1E3A8A;'&gt;☸️ Managed Service for Kubernetes: Regional Master (3 AZ, кворум etcd, SLA 99.95%, единый CI/CD)&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#DBEAFE;strokeColor=#2563EB;strokeWidth=1.5;fontColor=#1E3A8A;align=center;verticalAlign=middle;" parent="1" vertex="1">
+          <mxGeometry x="90" y="410" width="2220" height="38" as="geometry" />
+        </mxCell>
+        <mxCell id="17" value="" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#FFFFFF;strokeColor=#CBD5E1;strokeWidth=1.5;fontColor=#0F172A;shadow=1;" parent="1" vertex="1">
+          <mxGeometry x="90" y="465" width="710" height="515" as="geometry" />
+        </mxCell>
+        <mxCell id="18" value="&lt;div style='font-size:13px; font-weight:bold; color:#FFFFFF;'&gt;Зона A (ru-central1-a)&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#1E40AF;strokeColor=none;fontColor=#FFFFFF;align=center;verticalAlign=middle;" parent="1" vertex="1">
+          <mxGeometry x="90" y="465" width="710" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="19" value="&lt;div style='font-size:12px; font-weight:bold; color:#1E40AF;'&gt;Ingress Controller&lt;/div&gt;&lt;div style='font-size:10px; color:#64748B;'&gt;Nginx / ALB Ingress | Health Check: &lt;code&gt;GET /healthz&lt;/code&gt;&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#F1F5F9;strokeColor=#2563EB;strokeWidth=1.5;fontColor=#0F172A;align=center;verticalAlign=middle;" parent="1" vertex="1">
+          <mxGeometry x="110" y="505" width="670" height="38" as="geometry" />
+        </mxCell>
+        <mxCell id="20" value="&lt;div style='font-size:11px; font-weight:bold; color:#475569;'&gt;💻 Kubernetes Node Group (Compute VMs) | Autoscaling&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#F8FAFC;strokeColor=#94A3B8;strokeWidth=1;fontColor=#0F172A;verticalAlign=top;align=left;spacingLeft=10;spacingTop=4;" parent="1" vertex="1">
+          <mxGeometry x="110" y="555" width="670" height="230" as="geometry" />
+        </mxCell>
+        <mxCell id="21" value="&lt;div style='font-size:11px; font-weight:bold; color:#DC2626;'&gt;Namespace: insuretech (Active-Active поды)&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#FFFFFF;strokeColor=#DC2626;strokeWidth=1.5;dashed=1;fontColor=#991B1B;verticalAlign=top;align=center;spacingTop=4;" parent="1" vertex="1">
+          <mxGeometry x="125" y="580" width="640" height="195" as="geometry" />
+        </mxCell>
+        <mxCell id="22" value="&lt;div style='font-size:12px; font-weight:bold; color:#991B1B;'&gt;core-app&lt;/div&gt;&lt;div style='font-size:10px; color:#475569;'&gt;HPA: 3–10 | Витрина, тарифы, заявки&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#FEF2F2;strokeColor=#DC2626;strokeWidth=1;fontColor=#0F172A;align=center;verticalAlign=middle;" parent="1" vertex="1">
+          <mxGeometry x="140" y="608" width="290" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="23" value="&lt;div style='font-size:12px; font-weight:bold; color:#991B1B;'&gt;client-info&lt;/div&gt;&lt;div style='font-size:10px; color:#475569;'&gt;HPA: 2–6 | Профили клиентов, ПДн&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#FEF2F2;strokeColor=#DC2626;strokeWidth=1;fontColor=#0F172A;align=center;verticalAlign=middle;" parent="1" vertex="1">
+          <mxGeometry x="455" y="608" width="290" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="24" value="&lt;div style='font-size:12px; font-weight:bold; color:#991B1B;'&gt;ins-product-aggregator&lt;/div&gt;&lt;div style='font-size:10px; color:#475569;'&gt;Адаптер к 5 СК | Circuit Breaker&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#FEF2F2;strokeColor=#DC2626;strokeWidth=1;fontColor=#0F172A;align=center;verticalAlign=middle;" parent="1" vertex="1">
+          <mxGeometry x="140" y="690" width="290" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="25" value="&lt;div style='font-size:12px; font-weight:bold; color:#991B1B;'&gt;ins-comp-settlement&lt;/div&gt;&lt;div style='font-size:10px; color:#475569;'&gt;Взаиморасчеты с СК (реестры полисов)&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#FEF2F2;strokeColor=#DC2626;strokeWidth=1;fontColor=#0F172A;align=center;verticalAlign=middle;" parent="1" vertex="1">
+          <mxGeometry x="455" y="690" width="290" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="26" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;fontColor=#0F172A;fontSize=11;labelBackgroundColor=#FFFFFF;strokeWidth=2;strokeColor=#2563EB;strokeWidth=1.5;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" parent="1" edge="1" source="19" target="21">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="27" value="&lt;div style='font-size:13px; font-weight:bold; color:#B91C1C;'&gt;🐘 PostgreSQL Master&lt;/div&gt;&lt;div style='font-size:11px; color:#334155; margin-top:2px;'&gt;&lt;b&gt;Чтение и запись&lt;/b&gt; | 50 GB | PgBouncer Pool | Схемы: core, client, settlement&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#FEF2F2;strokeColor=#DC2626;strokeWidth=1.5;fontColor=#0F172A;align=center;verticalAlign=middle;shadow=1;" parent="1" vertex="1">
+          <mxGeometry x="110" y="805" width="670" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="28" value="&lt;b&gt;TCP / JDBC (PgBouncer)&lt;/b&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;fontColor=#0F172A;fontSize=11;labelBackgroundColor=#FFFFFF;strokeWidth=2;strokeColor=#475569;strokeWidth=1.5;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" parent="1" edge="1" source="21" target="27">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="29" value="" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#FFFFFF;strokeColor=#CBD5E1;strokeWidth=1.5;fontColor=#0F172A;shadow=1;" parent="1" vertex="1">
+          <mxGeometry x="845" y="465" width="710" height="515" as="geometry" />
+        </mxCell>
+        <mxCell id="30" value="&lt;div style='font-size:13px; font-weight:bold; color:#FFFFFF;'&gt;Зона B (ru-central1-b)&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#065F46;strokeColor=none;fontColor=#FFFFFF;align=center;verticalAlign=middle;" parent="1" vertex="1">
+          <mxGeometry x="845" y="465" width="710" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="31" value="&lt;div style='font-size:12px; font-weight:bold; color:#1E40AF;'&gt;Ingress Controller&lt;/div&gt;&lt;div style='font-size:10px; color:#64748B;'&gt;Nginx / ALB Ingress | Health Check: &lt;code&gt;GET /healthz&lt;/code&gt;&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#F1F5F9;strokeColor=#2563EB;strokeWidth=1.5;fontColor=#0F172A;align=center;verticalAlign=middle;" parent="1" vertex="1">
+          <mxGeometry x="865" y="505" width="670" height="38" as="geometry" />
+        </mxCell>
+        <mxCell id="32" value="&lt;div style='font-size:11px; font-weight:bold; color:#475569;'&gt;💻 Kubernetes Node Group (Compute VMs) | Autoscaling&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#F8FAFC;strokeColor=#94A3B8;strokeWidth=1;fontColor=#0F172A;verticalAlign=top;align=left;spacingLeft=10;spacingTop=4;" parent="1" vertex="1">
+          <mxGeometry x="865" y="555" width="670" height="230" as="geometry" />
+        </mxCell>
+        <mxCell id="33" value="&lt;div style='font-size:11px; font-weight:bold; color:#DC2626;'&gt;Namespace: insuretech (Active-Active поды)&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#FFFFFF;strokeColor=#DC2626;strokeWidth=1.5;dashed=1;fontColor=#991B1B;verticalAlign=top;align=center;spacingTop=4;" parent="1" vertex="1">
+          <mxGeometry x="880" y="580" width="640" height="195" as="geometry" />
+        </mxCell>
+        <mxCell id="34" value="&lt;div style='font-size:12px; font-weight:bold; color:#991B1B;'&gt;core-app&lt;/div&gt;&lt;div style='font-size:10px; color:#475569;'&gt;HPA: 3–10 | Витрина, тарифы, заявки&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#FEF2F2;strokeColor=#DC2626;strokeWidth=1;fontColor=#0F172A;align=center;verticalAlign=middle;" parent="1" vertex="1">
+          <mxGeometry x="895" y="608" width="290" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="35" value="&lt;div style='font-size:12px; font-weight:bold; color:#991B1B;'&gt;client-info&lt;/div&gt;&lt;div style='font-size:10px; color:#475569;'&gt;HPA: 2–6 | Профили клиентов, ПДн&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#FEF2F2;strokeColor=#DC2626;strokeWidth=1;fontColor=#0F172A;align=center;verticalAlign=middle;" parent="1" vertex="1">
+          <mxGeometry x="1210" y="608" width="290" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="36" value="&lt;div style='font-size:12px; font-weight:bold; color:#991B1B;'&gt;ins-product-aggregator&lt;/div&gt;&lt;div style='font-size:10px; color:#475569;'&gt;Адаптер к 5 СК | Circuit Breaker&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#FEF2F2;strokeColor=#DC2626;strokeWidth=1;fontColor=#0F172A;align=center;verticalAlign=middle;" parent="1" vertex="1">
+          <mxGeometry x="895" y="690" width="290" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="37" value="&lt;div style='font-size:12px; font-weight:bold; color:#991B1B;'&gt;ins-comp-settlement&lt;/div&gt;&lt;div style='font-size:10px; color:#475569;'&gt;Взаиморасчеты с СК (реестры полисов)&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#FEF2F2;strokeColor=#DC2626;strokeWidth=1;fontColor=#0F172A;align=center;verticalAlign=middle;" parent="1" vertex="1">
+          <mxGeometry x="1210" y="690" width="290" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="38" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;fontColor=#0F172A;fontSize=11;labelBackgroundColor=#FFFFFF;strokeWidth=2;strokeColor=#2563EB;strokeWidth=1.5;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" parent="1" edge="1" source="31" target="33">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="39" value="&lt;div style='font-size:13px; font-weight:bold; color:#047857;'&gt;🐘 PostgreSQL Synchronous Standby&lt;/div&gt;&lt;div style='font-size:11px; color:#334155; margin-top:2px;'&gt;&lt;b&gt;Синхронная реплика (RPO = 0)&lt;/b&gt; | Auto-Failover Patroni (&amp;lt; 30с) | PgBouncer&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#ECFDF5;strokeColor=#059669;strokeWidth=1.5;fontColor=#0F172A;align=center;verticalAlign=middle;shadow=1;" parent="1" vertex="1">
+          <mxGeometry x="865" y="805" width="670" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="40" value="&lt;b&gt;TCP / JDBC (PgBouncer)&lt;/b&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;fontColor=#0F172A;fontSize=11;labelBackgroundColor=#FFFFFF;strokeWidth=2;strokeColor=#475569;strokeWidth=1.5;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" parent="1" edge="1" source="33" target="39">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="41" value="" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#FFFFFF;strokeColor=#CBD5E1;strokeWidth=1.5;fontColor=#0F172A;shadow=1;" parent="1" vertex="1">
+          <mxGeometry x="1600" y="465" width="710" height="515" as="geometry" />
+        </mxCell>
+        <mxCell id="42" value="&lt;div style='font-size:13px; font-weight:bold; color:#FFFFFF;'&gt;Зона D (ru-central1-d)&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#1E3A8A;strokeColor=none;fontColor=#FFFFFF;align=center;verticalAlign=middle;" parent="1" vertex="1">
+          <mxGeometry x="1600" y="465" width="710" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="43" value="&lt;div style='font-size:12px; font-weight:bold; color:#1E40AF;'&gt;Ingress Controller&lt;/div&gt;&lt;div style='font-size:10px; color:#64748B;'&gt;Nginx / ALB Ingress | Health Check: &lt;code&gt;GET /healthz&lt;/code&gt;&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#F1F5F9;strokeColor=#2563EB;strokeWidth=1.5;fontColor=#0F172A;align=center;verticalAlign=middle;" parent="1" vertex="1">
+          <mxGeometry x="1620" y="505" width="670" height="38" as="geometry" />
+        </mxCell>
+        <mxCell id="44" value="&lt;div style='font-size:11px; font-weight:bold; color:#475569;'&gt;💻 Kubernetes Node Group (Compute VMs) | Autoscaling&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#F8FAFC;strokeColor=#94A3B8;strokeWidth=1;fontColor=#0F172A;verticalAlign=top;align=left;spacingLeft=10;spacingTop=4;" parent="1" vertex="1">
+          <mxGeometry x="1620" y="555" width="670" height="230" as="geometry" />
+        </mxCell>
+        <mxCell id="45" value="&lt;div style='font-size:11px; font-weight:bold; color:#DC2626;'&gt;Namespace: insuretech (Active-Active поды)&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#FFFFFF;strokeColor=#DC2626;strokeWidth=1.5;dashed=1;fontColor=#991B1B;verticalAlign=top;align=center;spacingTop=4;" parent="1" vertex="1">
+          <mxGeometry x="1635" y="580" width="640" height="195" as="geometry" />
+        </mxCell>
+        <mxCell id="46" value="&lt;div style='font-size:12px; font-weight:bold; color:#991B1B;'&gt;core-app&lt;/div&gt;&lt;div style='font-size:10px; color:#475569;'&gt;HPA: 3–10 | Витрина, тарифы, заявки&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#FEF2F2;strokeColor=#DC2626;strokeWidth=1;fontColor=#0F172A;align=center;verticalAlign=middle;" parent="1" vertex="1">
+          <mxGeometry x="1650" y="608" width="290" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="47" value="&lt;div style='font-size:12px; font-weight:bold; color:#991B1B;'&gt;client-info&lt;/div&gt;&lt;div style='font-size:10px; color:#475569;'&gt;HPA: 2–6 | Профили клиентов, ПДн&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#FEF2F2;strokeColor=#DC2626;strokeWidth=1;fontColor=#0F172A;align=center;verticalAlign=middle;" parent="1" vertex="1">
+          <mxGeometry x="1965" y="608" width="290" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="48" value="&lt;div style='font-size:12px; font-weight:bold; color:#991B1B;'&gt;ins-product-aggregator&lt;/div&gt;&lt;div style='font-size:10px; color:#475569;'&gt;Адаптер к 5 СК | Circuit Breaker&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#FEF2F2;strokeColor=#DC2626;strokeWidth=1;fontColor=#0F172A;align=center;verticalAlign=middle;" parent="1" vertex="1">
+          <mxGeometry x="1650" y="690" width="290" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="49" value="&lt;div style='font-size:12px; font-weight:bold; color:#991B1B;'&gt;ins-comp-settlement&lt;/div&gt;&lt;div style='font-size:10px; color:#475569;'&gt;Взаиморасчеты с СК (реестры полисов)&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#FEF2F2;strokeColor=#DC2626;strokeWidth=1;fontColor=#0F172A;align=center;verticalAlign=middle;" parent="1" vertex="1">
+          <mxGeometry x="1965" y="690" width="290" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="50" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;fontColor=#0F172A;fontSize=11;labelBackgroundColor=#FFFFFF;strokeWidth=2;strokeColor=#2563EB;strokeWidth=1.5;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" parent="1" edge="1" source="43" target="45">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="51" value="&lt;div style='font-size:13px; font-weight:bold; color:#1D4ED8;'&gt;🐘 PostgreSQL Asynchronous Standby&lt;/div&gt;&lt;div style='font-size:11px; color:#334155; margin-top:2px;'&gt;&lt;b&gt;Read-Only реплика&lt;/b&gt; (аналитика settlement) | Кворум 3 узлов | PgBouncer&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#EFF6FF;strokeColor=#2563EB;strokeWidth=1.5;fontColor=#0F172A;align=center;verticalAlign=middle;shadow=1;" parent="1" vertex="1">
+          <mxGeometry x="1620" y="805" width="670" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="52" value="&lt;b&gt;TCP / JDBC (PgBouncer)&lt;/b&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;fontColor=#0F172A;fontSize=11;labelBackgroundColor=#FFFFFF;strokeWidth=2;strokeColor=#475569;strokeWidth=1.5;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" parent="1" edge="1" source="45" target="51">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="53" value="&lt;b&gt;/healthz &amp;amp; Трафик&lt;/b&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;fontColor=#0F172A;fontSize=11;labelBackgroundColor=#FFFFFF;strokeWidth=2;strokeColor=#2563EB;strokeWidth=2;exitX=0.18;exitY=1;entryX=0.5;entryY=0;" parent="1" edge="1" source="11" target="19">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="54" value="&lt;b&gt;/healthz &amp;amp; Трафик&lt;/b&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;fontColor=#0F172A;fontSize=11;labelBackgroundColor=#FFFFFF;strokeWidth=2;strokeColor=#2563EB;strokeWidth=2;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" parent="1" edge="1" source="11" target="31">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="55" value="&lt;b&gt;/healthz &amp;amp; Трафик&lt;/b&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;fontColor=#0F172A;fontSize=11;labelBackgroundColor=#FFFFFF;strokeWidth=2;strokeColor=#2563EB;strokeWidth=2;exitX=0.82;exitY=1;entryX=0.5;entryY=0;" parent="1" edge="1" source="11" target="43">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="56" value="&lt;b&gt;Sync (RPO = 0)&lt;/b&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;fontColor=#0F172A;fontSize=11;labelBackgroundColor=#FFFFFF;strokeWidth=2;strokeColor=#059669;strokeWidth=2.5;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" parent="1" edge="1" source="27" target="39">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="57" value="&lt;b&gt;Async Streaming (Read-Only)&lt;/b&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;fontColor=#0F172A;fontSize=11;labelBackgroundColor=#FFFFFF;strokeWidth=2;strokeColor=#2563EB;strokeWidth=1.5;dashed=1;exitX=0.5;exitY=1;entryX=0.5;entryY=1;" parent="1" edge="1" source="27" target="51">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="445" y="930" />
+              <mxPoint x="1955" y="930" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="58" value="&lt;div style='font-size:13px; font-weight:bold; color:#166534;'&gt;🗄️ Yandex Object Storage (S3) — Резервное копирование и Disaster Recovery&lt;/div&gt;&lt;div style='font-size:11px; color:#334155; margin-top:2px;'&gt;• &lt;b&gt;Continuous WAL Archiving (WAL-G):&lt;/b&gt; PITR восстановление на любую секунду (&lt;b&gt;RPO &amp;le; 15 мин.&lt;/b&gt;, факт &amp;lt; 5 мин.)&lt;br&gt;• &lt;b&gt;Daily Base Backups:&lt;/b&gt; ежедневные снапшоты (хранение 30 дней) | Восстановление базы 50 GB за 5–10 мин. (&lt;b&gt;RTO &amp;le; 45 мин.&lt;/b&gt;)&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#F0FDF4;strokeColor=#16A34A;strokeWidth=1.5;fontColor=#0F172A;align=left;verticalAlign=top;spacing=10;shadow=1;" parent="1" vertex="1">
+          <mxGeometry x="90" y="1010" width="2220" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="59" value="&lt;b&gt;WAL-G &amp;amp; Бэкапы&lt;/b&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;fontColor=#0F172A;fontSize=11;labelBackgroundColor=#FFFFFF;strokeWidth=2;strokeColor=#16A34A;strokeWidth=2;exitX=0.15;exitY=1;entryX=0.12;entryY=0;" parent="1" edge="1" source="27" target="58">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="60" value="&lt;div style='font-size:13px; font-weight:bold; color:#1E40AF;'&gt;1. Масштабирование&lt;/div&gt;&lt;div style='font-size:11px; color:#64748B;'&gt;Horizontal vs Vertical&lt;/div&gt;&lt;hr style='border:0.5px solid #E2E8F0; margin:4px 0;'&gt;&lt;div style='font-size:11px; color:#1E293B; line-height:140%;'&gt;• &lt;b&gt;Stateless-слой:&lt;/b&gt; горизонтальное (Scale-Out) через K8s HPA по CPU/RAM/RPS.&lt;br&gt;• &lt;b&gt;Stateful-слой (50 GB):&lt;/b&gt; вертикальное (Scale-Up) узлов БД + реплика на чтение.&lt;br&gt;• &lt;b&gt;Multi-AZ:&lt;/b&gt; 3 зоны для выполнения норматива доступности &lt;b&gt;SLA 99.9%&lt;/b&gt;.&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#FFFFFF;strokeColor=#2563EB;strokeWidth=1.5;fontColor=#0F172A;align=left;verticalAlign=top;spacing=10;shadow=1;" parent="1" vertex="1">
+          <mxGeometry x="60" y="1115" width="436" height="240" as="geometry" />
+        </mxCell>
+        <mxCell id="61" value="&lt;div style='font-size:13px; font-weight:bold; color:#1E40AF;'&gt;2. K8s: Растянутый кластер&lt;/div&gt;&lt;div style='font-size:11px; color:#64748B;'&gt;Конфигурация развёртывания&lt;/div&gt;&lt;hr style='border:0.5px solid #E2E8F0; margin:4px 0;'&gt;&lt;div style='font-size:11px; color:#1E293B; line-height:140%;'&gt;• &lt;b&gt;Региональный Master:&lt;/b&gt; 3 AZ, кворум etcd (SLA 99.95%), единый CI/CD.&lt;br&gt;• &lt;b&gt;topologySpreadConstraints:&lt;/b&gt; автобалансировка подов по 3 зонам.&lt;br&gt;• &lt;b&gt;Отказ от независимых кластеров:&lt;/b&gt; исключает риски сложного Service Mesh.&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#FFFFFF;strokeColor=#2563EB;strokeWidth=1.5;fontColor=#0F172A;align=left;verticalAlign=top;spacing=10;shadow=1;" parent="1" vertex="1">
+          <mxGeometry x="521" y="1115" width="436" height="240" as="geometry" />
+        </mxCell>
+        <mxCell id="62" value="&lt;div style='font-size:13px; font-weight:bold; color:#0369A1;'&gt;3. Балансировка и CDN&lt;/div&gt;&lt;div style='font-size:11px; color:#64748B;'&gt;Регионы РФ и Health Checks&lt;/div&gt;&lt;hr style='border:0.5px solid #E2E8F0; margin:4px 0;'&gt;&lt;div style='font-size:11px; color:#1E293B; line-height:140%;'&gt;• &lt;b&gt;Yandex Cloud CDN:&lt;/b&gt; кэш статики по городам РФ &amp;rarr; &lt;b&gt;TTFB &amp;lt; 50 мс&lt;/b&gt;.&lt;br&gt;• &lt;b&gt;L7 ALB Multi-AZ:&lt;/b&gt; распределение динамического API-трафика.&lt;br&gt;• &lt;b&gt;Health Check:&lt;/b&gt; опрос &lt;code&gt;GET /healthz&lt;/code&gt; каждые 2с (отвод при 2 сбоях).&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#FFFFFF;strokeColor=#0284C7;strokeWidth=1.5;fontColor=#0F172A;align=left;verticalAlign=top;spacing=10;shadow=1;" parent="1" vertex="1">
+          <mxGeometry x="982" y="1115" width="436" height="240" as="geometry" />
+        </mxCell>
+        <mxCell id="63" value="&lt;div style='font-size:13px; font-weight:bold; color:#B91C1C;'&gt;4. Отказ от шардирования&lt;/div&gt;&lt;div style='font-size:11px; color:#64748B;'&gt;Обоснование для 50 GB&lt;/div&gt;&lt;hr style='border:0.5px solid #E2E8F0; margin:4px 0;'&gt;&lt;div style='font-size:11px; color:#1E293B; line-height:140%;'&gt;• &lt;b&gt;Объём 50 GB:&lt;/b&gt; легко обслуживается одним сервером PostgreSQL.&lt;br&gt;• &lt;b&gt;Без оверхеда:&lt;/b&gt; нет 2PC, сохранены Foreign Keys и аналитика.&lt;br&gt;• &lt;b&gt;Отказоустойчивость:&lt;/b&gt; Master + Synchronous Standby (&lt;b&gt;RPO = 0&lt;/b&gt;).&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#FFFFFF;strokeColor=#DC2626;strokeWidth=1.5;fontColor=#0F172A;align=left;verticalAlign=top;spacing=10;shadow=1;" parent="1" vertex="1">
+          <mxGeometry x="1443" y="1115" width="436" height="240" as="geometry" />
+        </mxCell>
+        <mxCell id="64" value="&lt;div style='font-size:13px; font-weight:bold; color:#15803D;'&gt;5. Фейловер (RTO / RPO)&lt;/div&gt;&lt;div style='font-size:11px; color:#64748B;'&gt;RTO &amp;le; 45 мин. | RPO &amp;le; 15 мин.&lt;/div&gt;&lt;hr style='border:0.5px solid #E2E8F0; margin:4px 0;'&gt;&lt;div style='font-size:11px; color:#1E293B; line-height:140%;'&gt;• &lt;b&gt;Сбой зоны (ЦОД):&lt;/b&gt; ALB переключает трафик за &lt;b&gt;4–10 сек.&lt;/b&gt; (RPO = 0).&lt;br&gt;• &lt;b&gt;Сбой Master БД:&lt;/b&gt; Patroni промоутит Standby за &lt;b&gt;15–30 сек.&lt;/b&gt; (RPO = 0).&lt;br&gt;• &lt;b&gt;Катастрофа:&lt;/b&gt; восстановление 50 GB из S3 за &lt;b&gt;5–10 мин.&lt;/b&gt; (&amp;le; 45 мин.).&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#FFFFFF;strokeColor=#16A34A;strokeWidth=1.5;fontColor=#0F172A;align=left;verticalAlign=top;spacing=10;shadow=1;" parent="1" vertex="1">
+          <mxGeometry x="1904" y="1115" width="436" height="240" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

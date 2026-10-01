@@ -192,7 +192,8 @@ architecture-insuretech/
 ├── Task2/                  # Задание 2: Масштабирование сервисов в K8s (Deployment, HPA, Service, Locust)
 ├── Task3/                  # Задание 3: Асинхронная Event-Driven Architecture (EDA) на Apache Kafka (Transactional Outbox)
 ├── Task4/                  # Задание 4: Онлайн-ОСАГО (SSE-стриминг, интеграция с 10 СК, паттерны отказоустойчивости)
-└── Task5/                  # Задание 5: Проектирование GraphQL API для сервиса client-info
+├── Task5/                  # Задание 5: Проектирование GraphQL API для сервиса client-info
+└── Task6/                  # Резервная директория из исходного шаблона курса
 ```
 
 Каждое задание содержит необходимые архитектурные диаграммы (C4 Container, технологическая архитектура в формате draw.io), конфигурационные файлы, манифесты Kubernetes (`deployment.yaml`, `hpa.yaml`), схемы API (GraphQL SDL) и скрипты тестирования.
